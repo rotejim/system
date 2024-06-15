@@ -8,8 +8,7 @@
       {
         "src": "apps/api",
         "use": "@vercel/node",
-        "buildCommand": "npm run build",
-        "publish": ".vercel"
+        "buildCommand": "npm run build"
       }
     ]
   }
