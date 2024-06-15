@@ -6,8 +6,7 @@
       },
       {
         "src": "apps/api",
-        "use": "@vercel/node",
-        "buildCommand": "npm run build"
+        "use": "@vercel/node"
       }
     ]
   }
