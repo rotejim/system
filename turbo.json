@@ -13,5 +13,11 @@
       "cache": false,
       "persistent": true
     }
-  }
+  },
+  "plugins": [
+    {
+      "name": "@vercel/turbоrеpo-plugin-vercel",
+      "version": "latest"
+    }
+  ]
 }

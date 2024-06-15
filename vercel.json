@@ -1,0 +1,15 @@
+{
+    "builds": [
+      {
+        "src": "apps/web",
+        "use": "@vercel/next",
+        "publish": "public"
+      },
+      {
+        "src": "apps/api",
+        "use": "@vercel/node",
+        "buildCommand": "npm run build",
+        "publish": ".vercel"
+      }
+    ]
+  }

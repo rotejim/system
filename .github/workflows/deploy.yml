@@ -1,0 +1,50 @@
+name: Deploy Next.js and Nest.js monorepo
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Nest.js API
+        run: npm run build
+
+      - name: Deploy Nest.js API to Vercel
+        uses: vercel/vercel-action@v2.1.0
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          prompts: none
+          publish-dir: .vercel
+
+      - name: Get Nest.js API URL
+        id: get-nestjs-api-url
+        run: |
+          echo "::set-output name=NESTJS_API_URL::$(curl -s https://api.vercel.com/v1/projects/${{ secrets.VERCEL_PROJECT_ID }}/deployments/${{ steps.deploy-nestjs-api.outputs.deployment_id }} | jq -r .url)"
+
+      - name: Update Next.js environment variable
+        run: |
+          echo "NEXT_PUBLIC_API_URL=${{ steps.get-nestjs-api-url.outputs.NESTJS_API_URL }}" >> .env
+
+      - name: Build Next.js app
+        run: npm run build:web
+
+      - name: Deploy Next.js app to Vercel
+        uses: vercel/vercel-action@v2.1.0
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          prompts: none
+          publish-dir: public
