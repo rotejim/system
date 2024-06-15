@@ -2,8 +2,7 @@
     "builds": [
       {
         "src": "apps/web",
-        "use": "@vercel/next",
-        "publish": "public"
+        "use": "@vercel/next"
       },
       {
         "src": "apps/api",
